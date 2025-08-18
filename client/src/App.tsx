@@ -591,7 +591,7 @@ function App() {
       <header className="w-full bg-gray-100 border-b border-gray-200 px-4 py-4 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-10">
         <div>
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="CBX Editor logo" className="w-8 h-8" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="CBX Editor logo" className="w-8 h-8" />
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">CBX Editor</h1>
           </div>
           <p className="text-gray-500 mt-1 text-sm sm:text-base">
