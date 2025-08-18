@@ -376,7 +376,7 @@ function HtmlEditor({ initialHtmlContent, onHtmlContentChange }) {
 
   return (
     <textarea
-      className="w-full h-full min-h-0 p-4 border border-gray-300 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 bg-gray-900 text-gray-100 resize-none"
+      className="w-full h-full min-h-[400px] p-4 border border-gray-300 rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 bg-gray-900 text-gray-100 resize-none"
       value={initialHtmlContent}
       onChange={handleChange}
       spellCheck="false"
@@ -386,7 +386,7 @@ function HtmlEditor({ initialHtmlContent, onHtmlContentChange }) {
 }
 
 const DRAFTS_STORAGE_KEY = 'cbx-editor-drafts-list';
-const MAX_DRAFTS = 5; // Maximum number of drafts to store
+const MAX_DRAFTS = 5;
 
 function DraftsModal({ drafts, onSelectDraft, onDeleteDraft, onClose }) {
   return (
@@ -589,9 +589,11 @@ function App() {
   return (
     <main className="min-h-screen bg-gray-50 font-poppins text-gray-900">
       <header className="w-full bg-gray-100 border-b border-gray-200 px-4 py-4 flex flex-wrap items-center justify-between shadow-sm sticky top-0 z-10">
-        {/* Left side: Title & Subtitle */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">CBX Editor</h1>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="CBX Editor logo" className="w-8 h-8" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">CBX Editor</h1>
+          </div>
           <p className="text-gray-500 mt-1 text-sm sm:text-base">
             Compose, edit, and manage your HTML content
           </p>
@@ -630,7 +632,7 @@ function App() {
       <div className="w-full px-4 py-8">
 
 
-        <section className="w-full grid grid-cols-2 gap-6">
+        <section className="w-full grid sm:grid-cols-2 gap-6">
           <div className="">
             <EmailEditor
               initialHtmlContent={html}
