@@ -381,9 +381,11 @@ function HtmlEditor({ initialHtmlContent, onHtmlContentChange }) {
       onChange={handleChange}
       spellCheck="false"
       aria-label="HTML Code Editor"
+      placeholder="Write Html Here..."
     />
   );
 }
+
 
 const DRAFTS_STORAGE_KEY = 'cbx-editor-drafts-list';
 const MAX_DRAFTS = 5;
@@ -447,6 +449,7 @@ function App() {
   const [draftName, setDraftName] = useState('');
   const [isDraftsModalOpen, setIsDraftsModalOpen] = useState(false);
   const [activeDraftId, setActiveDraftId] = useState(null);
+  const [previewMode, setPreviewMode] = useState('desktop');
 
   // Load initial HTML and drafts from localStorage
   useEffect(() => {
@@ -657,26 +660,56 @@ function App() {
         {isPreviewOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsPreviewOpen(false)} aria-hidden="true" />
-            <div className="relative z-10 bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all scale-100 opacity-100">
+            <div className="relative z-10 bg-white rounded-xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col overflow-hidden transform transition-all scale-100 opacity-100">
               <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 bg-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Preview</h3>
-                <button
-                  onClick={() => setIsPreviewOpen(false)}
-                  className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200 shadow-sm"
-                  aria-label="Close preview"
-                >
-                  Close
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setPreviewMode('desktop')}
+                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors duration-200 ${previewMode === 'desktop' ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                    title="Desktop view"
+                  >
+                    Desktop
+                  </button>
+                  <button
+                    onClick={() => setPreviewMode('mobile')}
+                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors duration-200 ${previewMode === 'mobile' ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                    title="Mobile view"
+                  >
+                    Mobile
+                  </button>
+                  <button
+                    onClick={() => setIsPreviewOpen(false)}
+                    className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200 shadow-sm"
+                    aria-label="Close preview"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
-              <div className="p-4 overflow-auto flex-grow bg-gray-100">
+              <div className="p-4 overflow-auto  bg-gray-100">
                 {html?.trim() ? (
-                  <iframe
-                    key={previewVersion}
-                    title="Preview"
-                    className="w-full h-[70vh] bg-white border border-gray-200 rounded-lg shadow-inner"
-                    sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts"
-                    srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><script src="https://cdn.tailwindcss.com"></script></head><body style="margin:0; padding:20px; box-sizing:border-box;">${html}</body></html>`}
-                  />
+                  previewMode === 'desktop' ? (
+                    <div className="flex justify-center">
+                      <iframe
+                        key={`desktop-${previewVersion}`}
+                        title="Desktop Preview"
+                        className="w-[1280px] h-[70vh] bg-white border border-gray-200 rounded-lg shadow-inner"
+                        sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts"
+                        srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8" /><meta name="viewport" content="width=1280, initial-scale=1" /><script src="https://cdn.tailwindcss.com"></script></head><body style="margin:0; padding:20px; box-sizing:border-box;">${html}</body></html>`}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex justify-center">
+                      <iframe
+                        key={`mobile-${previewVersion}`}
+                        title="Mobile Preview"
+                        className="w-[490px] h-[70vh] bg-white border border-gray-200 rounded-lg shadow-inner"
+                        sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms allow-scripts"
+                        srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><script src="https://cdn.tailwindcss.com"></script></head><body style="margin:0; padding:20px; box-sizing:border-box;">${html}</body></html>`}
+                      />
+                    </div>
+                  )
                 ) : (
                   <div className="bg-white border border-gray-200 rounded-lg p-4 min-h-[200px] flex items-center justify-center text-center shadow-inner">
                     <p className="text-gray-500">Nothing to preview yet. Start typing in the editor!</p>
