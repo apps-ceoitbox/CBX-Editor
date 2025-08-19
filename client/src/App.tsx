@@ -368,7 +368,7 @@ const EmailEditor = ({ initialHtmlContent, onHtmlContentChange, onFocus }) => {
   );
 };
 
-// A simple HTML code editor component
+
 function HtmlEditor({ initialHtmlContent, onHtmlContentChange }) {
   const handleChange = (event) => {
     onHtmlContentChange(event.target.value);
